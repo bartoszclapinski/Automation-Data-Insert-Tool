@@ -1,15 +1,36 @@
+# generator.py
 import pandas as pd
+import datetime
+from itertools import zip_longest
 
 
-def generate_and_save_data():
-    columns_data = {
-        "Column1": ["01012024", "03012024", "08012024", "11012024", "15012024", "21012024", "25012024", "30012024"],
-        "Column2": ["01022024", "03022024", "08022024", "11022024", "15022024", "21022024", "25022024", "30022024"],
-        "Column3": ["01032024", "03032024", "08032024", "11032024", "15032024", "21032024", "25032024", "30032024"],
-        "Column4": ["01042024", "03042024", "08042024", "11042024", "15042024", "21042024", "25042024", "30042024"],
-        "Column5": ["01052024", "03052024", "08052024", "11052024", "15052024", "21052024", "25052024", "30052024"]
-    }
-    file_path = ""
-    df = pd.DataFrame(columns_data)
-    df.to_excel(file_path, index=False, header=False)
+def generate_dates_for_weekday(year, month, weekday):
+    day = datetime.date(year, month, 1)
+    while day.weekday() != weekday:
+        day += datetime.timedelta(days=1)
+    while day.month == month:
+        yield day
+        day += datetime.timedelta(days=7)
+
+
+def flatten_and_sort_dates(dates1, dates2):
+    combined_dates = list(zip_longest(dates1, dates2))
+    flat_list = [date for sublist in combined_dates for date in sublist if date is not None]
+    return sorted(flat_list)
+
+
+def generate_data_for_day_pairs(year, month, day_pairs):
+    data = {}
+    for day1, day2 in day_pairs:
+        dates1 = list(generate_dates_for_weekday(year, month, day1))
+        dates2 = list(generate_dates_for_weekday(year, month, day2))
+        data[f'{day1}_{day2}'] = flatten_and_sort_dates(dates1, dates2)
+    return data
+
+
+def save_to_excel(data, filename):
+    df = pd.DataFrame.from_dict({k: pd.Series(pd.to_datetime(v)) for k, v in data.items()})
+    for col in df.columns:
+        df[col] = df[col].dt.strftime('%d%m%Y')
+    df.to_excel(filename, index=False, header=False)
 

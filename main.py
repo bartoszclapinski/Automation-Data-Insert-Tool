@@ -4,7 +4,7 @@ import threading
 from excel_reader import read_excel_all_columns
 from automation import automate_keyboard_actions
 from gui_components import FileLoadFrame, AutomationFrame
-from generator import generate_and_save_data
+from generator import save_to_excel, generate_data_for_day_pairs
 
 
 class ExcelDataReaderGUI:
@@ -80,7 +80,11 @@ class ExcelDataReaderGUI:
 
     def generate_data(self):
         try:
-            generate_and_save_data()
+            year = 2024
+            month = 1
+            day_pairs = [(0, 5), (0, 3), (1, 3), (2, 4), (1, 5)]
+            generated_pairs = generate_data_for_day_pairs(year, month, day_pairs)
+            save_to_excel(generated_pairs, f"F:\\Repos\\Python-Projects\\DataFiles\\output-{month}-{year}.xlsx")
             messagebox.showinfo("Success", "Data generated successfully")
         except Exception as e:
             messagebox.showerror("Error", f"Error: {e}")
