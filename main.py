@@ -14,6 +14,9 @@ class ExcelDataReaderGUI:
         self.window = window
         window.title("Automation Data Insert")
 
+        # Center the window
+        self.center_window()
+
         # Load file Section
         self.file_load_frame = FileLoadFrame(window, self.load_file)
         self.file_load_frame.pack(padx=10, pady=10, fill='x')
@@ -28,6 +31,15 @@ class ExcelDataReaderGUI:
         frame.pack(padx=10, pady=10)
         self.text_area = tk.Text(window, height=15, width=50)
         self.text_area.pack(padx=10, pady=10)
+
+    def center_window(self, w=400, h=400):
+        # get screen width and height
+        ws = self.window.winfo_screenwidth()
+        hs = self.window.winfo_screenheight()
+        # calculate position x, y
+        x = (ws/2) - (w/2)
+        y = (hs/2) - (h/2)
+        self.window.geometry('%dx%d+%d+%d' % (w, h, x, y))
 
     def load_file(self):
         file_path = filedialog.askopenfilename(filetypes=[("Excel files", "*.xlsx;*.xls")])
