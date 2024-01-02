@@ -4,6 +4,7 @@ import threading
 from excel_reader import read_excel_all_columns
 from automation import automate_keyboard_actions
 from gui_components import FileLoadFrame, AutomationFrame
+from generator import generate_and_save_data
 
 
 class ExcelDataReaderGUI:
@@ -25,6 +26,12 @@ class ExcelDataReaderGUI:
         self.automation_frame = AutomationFrame(window, self.start_automation)
         self.automation_frame.pack(padx=10, pady=10, fill='x')
         self.automation_frame.set_state(tk.DISABLED)
+
+        # Data Generator Section
+        data_generator_frame = tk.Frame(window)
+        data_generator_frame.pack(padx=10, pady=10, fill='x')
+        data_generator_button = tk.Button(data_generator_frame, text="Generate Data", command=self.generate_data)
+        data_generator_button.pack(side=tk.LEFT, padx=(0, 10))
 
         # Text Area Section
         frame = tk.Frame(window)
@@ -70,6 +77,13 @@ class ExcelDataReaderGUI:
     def update_text_area(self, text):
         self.text_area.insert(tk.END, text)
         self.text_area.see(tk.END)
+
+    def generate_data(self):
+        try:
+            generate_and_save_data()
+            messagebox.showinfo("Success", "Data generated successfully")
+        except Exception as e:
+            messagebox.showerror("Error", f"Error: {e}")
 
 
 if __name__ == "__main__":
