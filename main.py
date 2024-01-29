@@ -1,8 +1,8 @@
 import tkinter as tk
-from tkinter import filedialog, messagebox, ttk
+from tkinter import filedialog, messagebox
 import threading
 from excel_reader import read_excel_all_columns
-from automation import automate_keyboard_actions
+from automation import automate_keyboard_actions, automate_test
 from gui_components import FileLoadFrame, AutomationFrame
 from generator import save_to_excel, generate_data_for_day_pairs
 
@@ -39,7 +39,7 @@ class ExcelDataReaderGUI:
         self.text_area = tk.Text(window, height=15, width=50)
         self.text_area.pack(padx=10, pady=10)
 
-    def center_window(self, w=400, h=400):
+    def center_window(self, w=800, h=800):
         # get screen width and height
         ws = self.window.winfo_screenwidth()
         hs = self.window.winfo_screenheight()
@@ -68,7 +68,7 @@ class ExcelDataReaderGUI:
         if selected_index is not None:
             selected_data = self.columns_data[selected_index]
             automation_thread = threading.Thread(
-                target=automate_keyboard_actions,
+                target=automate_test,
                 args=(selected_data, self.update_text_area))
             automation_thread.start()
         else:
@@ -78,14 +78,16 @@ class ExcelDataReaderGUI:
         self.text_area.insert(tk.END, text)
         self.text_area.see(tk.END)
 
-    def generate_data(self):
+    @staticmethod
+    def generate_data():
         try:
             year = 2024
             month = 1
             day_pairs = [(0, 5), (0, 3), (1, 3), (2, 4), (1, 5)]
             generated_pairs = generate_data_for_day_pairs(year, month, day_pairs)
-            save_to_excel(generated_pairs, f"F:\\Repos\\Python-Projects\\DataFiles\\output-{month}-{year}.xlsx")
+            save_to_excel(generated_pairs, f"C:\\Kasia\\Automate-Tool-Data\\output-{month}-{year}.xlsx")
             messagebox.showinfo("Success", "Data generated successfully")
+
         except Exception as e:
             messagebox.showerror("Error", f"Error: {e}")
 
