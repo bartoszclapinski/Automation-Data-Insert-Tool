@@ -32,5 +32,6 @@ class AutomationFrame(tk.Frame):
     def set_data_series(self, data_series):
         self.data_series = data_series
         column_names = ["Pon-Sob", "Pon-Czw", "Wt-Czw", "Sr-Pt", "Wt-Sob"]
-        self.column_selector['values'] = column_names if column_names else [f"Column {i + 1}" for i in range(len(self.data_series))]
+        self.column_selector['values'] = \
+            column_names if column_names else [f"Column {i + 1}" for i in range(len(self.data_series))]
 
