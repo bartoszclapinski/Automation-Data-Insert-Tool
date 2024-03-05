@@ -14,13 +14,10 @@ def automate_test(data_series, update_func):
         wait(2)
 
         for data in data_series:
-            if str(data).lower() == 'nan':
-                return
-            else:
-                pag.write(str(data))
-                wait(0.5)
-                pag.press('enter')
-                wait(0.5)
+            pag.write(str(data))
+            wait(0.5)
+            pag.press('enter')
+            wait(0.5)
 
     except KeyboardInterrupt as error:
         update_func(f"Error: {error}\n")

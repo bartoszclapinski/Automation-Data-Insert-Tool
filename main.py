@@ -82,7 +82,7 @@ class ExcelDataReaderGUI:
     def generate_data():
         try:
             year = 2024
-            month = 1
+            month = 2
             day_pairs = [(0, 5), (0, 3), (1, 3), (2, 4), (1, 5)]
             generated_pairs = generate_data_for_day_pairs(year, month, day_pairs)
             save_to_excel(generated_pairs, f"F:\\Repos\\Python-Projects\\DataFiles\\output-{month}-{year}.xlsx")

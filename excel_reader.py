@@ -1,17 +1,12 @@
 import pandas as pd
 
 
-def read_excel_column(file_path, column_index):
-    # Specify data type as string to ensure all data is read as text
-    # Need to be done for data with leading zero
-    df = pd.read_excel(file_path, header=None, dtype={column_index: str})
-    data_column = df.iloc[:, column_index]
-    return data_column
-
-
 def read_excel_all_columns(file_path):
-    # Read the entire sheet
+    # Read the entire sheet (path to file, no header, all columns as strings)
     df = pd.read_excel(file_path, header=None, dtype=str)
+
+    # Drop any rows with NaN values
+    df.dropna(inplace=True)
 
     # Store each column as a separate list
     columns_data = []
@@ -19,4 +14,3 @@ def read_excel_all_columns(file_path):
         columns_data.append(df[column].tolist())
 
     return columns_data
-
